@@ -8,7 +8,7 @@ class Tree:
     def __repr__(self) -> str:
         return (
             "<"
-            + ("V" if self.visible == True else "H")
+            + ("V" if self.visible else "H")
             + str(self.height)
             + "s"
             + str(self.score)
@@ -20,14 +20,12 @@ class Tree:
 with open("main.txt") as f:
     lines = f.readlines()
 
-
+# remove \n
 for i in range(len(lines) - 1):
     lines[i] = lines[i][:-1]
 
 
-tree_map = [
-    [Tree(lines[z][w]) for w in range(len(lines[z]))] for z in range(len(lines))
-]
+tree_map = [[Tree(z[h]) for h in range(len(z))] for z in lines]
 
 
 def check_visibile_tree(tree_map):
@@ -36,34 +34,35 @@ def check_visibile_tree(tree_map):
             # looking from the left
             left = True
             for s in range(0, z):
-                # print("left i,z,s",i,z,s,tree_map[i][s].height > tree_map[i][z].height,tree_map[i][s].height , tree_map[i][z].height)
+
                 if tree_map[i][s].height >= tree_map[i][z].height:
                     left = False
                     break
             # looking from the right
             right = True
             for s in range(z + 1, len(lines[i])):
-                # print("right i,z,s",i,z,s,tree_map[i][s].height > tree_map[i][z].height,tree_map[i][s].height , tree_map[i][z].height)
+
                 if tree_map[i][s].height >= tree_map[i][z].height:
                     right = False
                     break
             # looking from the up
             up = True
             for s in range(0, i):
-                # print("up i,z,s",i,z,s,tree_map[s][z].height >= tree_map[i][z].height,tree_map[s][z].height , tree_map[i][z].height)
+
                 if tree_map[s][z].height >= tree_map[i][z].height:
                     up = False
                     break
             # looking from the down
             down = True
             for s in range(i + 1, len(lines)):
-                # print("down i,z,s",i,z,s,tree_map[s][z].height >= tree_map[i][z].height,tree_map[s][z].height , tree_map[i][z].height)
+
                 if tree_map[s][z].height >= tree_map[i][z].height:
                     down = False
                     break
 
             # print(left,right,up,down)
-            tree_map[i][z].visible = False if right + left + up + down == 0 else True
+            res = right + left + up + down
+            tree_map[i][z].visible = False if res == 0 else True
 
 
 def nb_visibile(tree_map):
@@ -79,7 +78,7 @@ check_visibile_tree(tree_map)
 print(nb_visibile(tree_map))
 
 
-## part 2
+# part 2
 
 
 def check_score_tree(tree_map):
