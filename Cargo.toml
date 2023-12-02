@@ -1,0 +1,8 @@
+[package]
+name = "advent-of-code"
+version = "0.1.0"
+authors = ["Qypol"]
+edition = "20233"
+
+
+[dependencies]
